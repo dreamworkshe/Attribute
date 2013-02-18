@@ -9,21 +9,42 @@
 #import "AttributeViewController.h"
 
 @interface AttributeViewController ()
-
+@property (weak, nonatomic) IBOutlet UILabel *label;
+@property (weak, nonatomic) IBOutlet UIStepper *selectedWordStepper;
+@property (weak, nonatomic) IBOutlet UILabel *selectedWordlabel;
 @end
 
 @implementation AttributeViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+- (IBAction)underline {
+    NSRange range = [[self.label.attributedText string] rangeOfString:[self selectedWord]];
+    if (range.location != NSNotFound) {
+        
+    }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+- (NSArray *)wordList {
+    NSArray *wordList = [[self.label.attributedText string] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([wordList count]) {
+        return wordList;
+    } else {
+        return @[@""];
+    }
+}
+
+- (NSString *)selectedWord {
+    return [self wordList][(int)self.selectedWordStepper.value];
+}
+
+- (IBAction)updateSelectedWord {
+    self.selectedWordStepper.maximumValue = [[self wordList] count]-1;
+    self.selectedWordlabel.text = [self selectedWord];
+}
+
+- (void) viewDidLoad {
+    [super viewDidLoad];
+    [self updateSelectedWord];
 }
 
 @end
